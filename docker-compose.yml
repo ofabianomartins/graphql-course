@@ -1,8 +1,20 @@
-service:
-  app:
+version: "2"
+services:
+  server:
     build:
       context: .
       dockerfile: Dockerfile
+    command: yarn dev
+    environment: 
+      NODE_ENV: 'development'
     volumes: 
       - ./:/www
-
+    ports: 
+      - '3000:3000'
+  build:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: yarn gulp
+    volumes: 
+      - ./:/www

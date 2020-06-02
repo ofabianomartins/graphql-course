@@ -1,4 +1,4 @@
-FROM node:12.17
+FROM node:8.6.0
 
 # File Author / Maintainer
 LABEL authors="Fabiano Martins <fabiano.paula.martins@gmail.com>"
@@ -20,5 +20,5 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 # expose the port to outside world
 EXPOSE $PORT
 
-CMD ["yarn","start:production"]
+CMD ["yarn","start"]
 

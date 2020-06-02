@@ -2,4 +2,4 @@
 
 yarn build
 
-exec "$@"% 
+exec "$@"
