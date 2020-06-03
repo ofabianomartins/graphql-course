@@ -1,5 +1,13 @@
 version: "2"
 services:
+  db:
+    image: mariadb/server:10.4
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: 'root'
+      MARIADB_DATABASE: 'graphql_blog_development'
+    ports:
+      - '3306:3306'
   server:
     build:
       context: .
@@ -7,14 +15,13 @@ services:
     command: yarn dev
     environment: 
       NODE_ENV: 'development'
+      DATABASE: 'graphql_blog_development'
+      DB_USER: 'root'
+      DB_PASSWORD: 'root'
+      DB_HOST: 'db'
     volumes: 
       - ./:/www
+    depends_on: 
+      - 'db'
     ports: 
       - '3000:3000'
-  build:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: yarn gulp
-    volumes: 
-      - ./:/www

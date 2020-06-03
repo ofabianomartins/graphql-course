@@ -1,49 +1,39 @@
 import { makeExecutableSchema } from 'graphql-tools'
+import { merge } from 'lodash'
 
-const users: any[] = [
-  {
-    id: 1,
-    name: 'John',
-    email: 'john@email.com'
-  },
-  {
-    id: 2,
-    name: 'Dany',
-    email: 'danny@email.com'
+import { Query } from './query'
+import { Mutation } from './mutation'
+
+import { commentResolvers } from './resources/comment/comment.resolvers';
+import { postResolvers } from './resources/post/post.resolvers';
+import { userResolvers } from './resources/user/user.resolvers';
+
+import { postTypes } from './resources/post/post.schema';
+import { userTypes } from './resources/user/user.schema';
+import { commentTypes } from './resources/comment/comment.schema';
+
+const SchemaDefinition = `
+  type Schema {
+    query: Query
+    mutation: Mutation
   }
-]
+`;
 
-const typeDefs = `
-  type User {
-    id: ID!
-    name:  String!
-    email: String!
-    sign: String
-  }
+const resolvers = merge(
+  commentResolvers,
+  postResolvers,
+  
+  userResolvers
+);
 
-  type Query {
-    allUsers: [User!]!
-  }
-
-  type Mutation {
-    createUser(name: String!, email: String!): User
-  }
-`
-
-const resolvers = {
-  User: {
-    sign: (user: any) => `${user.name} <${user.email}>`
-  },
-  Query: {
-    allUsers: () => users
-  },
-  Mutation: {
-    createUser: (parent: any ,args: any)  => {
-      const newUser = Object.assign({ id: users.length + 1}, args)
-      users.push(newUser)
-      return newUser
-    }
-  }
-}
-
-export default makeExecutableSchema({typeDefs, resolvers});
+export default makeExecutableSchema({
+  typeDefs: [
+    SchemaDefinition,
+    Query,
+    Mutation,
+    postTypes,
+    userTypes,
+    commentTypes
+  ],
+  resolvers 
+});
