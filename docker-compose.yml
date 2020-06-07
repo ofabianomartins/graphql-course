@@ -19,6 +19,7 @@ services:
       DB_USER: 'root'
       DB_PASSWORD: 'root'
       DB_HOST: 'db'
+      JWT_SECRET: graphql
     volumes: 
       - ./:/www
     depends_on: 

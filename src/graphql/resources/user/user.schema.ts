@@ -30,13 +30,14 @@ const userTypes = `
 const userQueries = `
   users(first: Int, offset: Int): [ User! ]!
   user(id: ID! ): User!
+  currentUser: User!
 `
 
 const userMutations = `
   createUser(input: UserCreateInput!): User
   updateUser(input: UserUpdateInput!): User
   updateUserPassword(input: UserUpdatePasswordInput!): Boolean
-  deleteUser(id: ID!): Boolean
+  deleteUser: Boolean
 `;
 
 export {
