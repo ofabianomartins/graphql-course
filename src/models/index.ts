@@ -13,7 +13,9 @@ if (!db) {
 
     db = {};
 
-    const operatorsAliases = false;
+    const operatorsAliases = {
+        $in: Sequelize.Op.in
+    };
 
     config = Object.assign({operatorsAliases}, config);
 
@@ -27,7 +29,7 @@ if (!db) {
             database: process.env.DATABASE    || "graphql_blog_development",
             host: process.env.DB_HOST  || "127.0.0.1",
             dialect: "mysql",
-            operatorsAliases: false
+            operatorsAliases
         }
     );
 

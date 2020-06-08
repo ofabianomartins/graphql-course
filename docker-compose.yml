@@ -8,6 +8,8 @@ services:
       MARIADB_DATABASE: 'graphql_blog_development'
     ports:
       - '3306:3306'
+    volumes: 
+      - './datamysql:/var/lib/mysql'
   server:
     build:
       context: .

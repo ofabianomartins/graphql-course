@@ -10,21 +10,35 @@ import { ResolverContext } from "../../../interfaces/ResolverContextInterface";
 export const commentResolvers = {
 
   Comment: {
-    user: (comment: CommentInstance, args, {db}: ResolverContext, info) => {
-      return db.User.findById(comment.get('id')).catch(handleError)
+    user: (comment: CommentInstance, args, {db, dataLoaders}: ResolverContext, info) => {
+      return dataLoaders
+        .userLoader
+        .load({
+          key: comment.get('user'),
+          info
+        })
+        .catch(handleError)
     },
 
-    post: (comment: CommentInstance, args, {db}: ResolverContext, info) => {
-      return db.Post.findById(comment.get('id')).catch(handleError)
+    post: (comment: CommentInstance, args, {db, dataLoaders}: ResolverContext, info) => {
+      return dataLoaders
+        .postLoader
+        .load({
+          key: comment.get('post'),
+          info
+        })
+        .catch(handleError) 
+
     }
   },
   Query: {
-    commentsByPost: (parent, { postId, first = 10, offset = 0}, {db}:ResolverContext, info) => {
+    commentsByPost: (parent, { postId, first = 10, offset = 0}, {db, requestedFields}:ResolverContext, info) => {
       postId = parseInt(postId)
       return db.Comment.findAll({
         where: { post: postId },
         limit: first,
-        offset
+        offset,
+        attributes: requestedFields.getFields(info)
       })
       .catch(handleError)
     }
