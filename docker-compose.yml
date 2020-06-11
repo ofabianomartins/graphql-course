@@ -28,3 +28,21 @@ services:
       - 'db'
     ports: 
       - '3000:3000'
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: yarn dev
+    environment: 
+      NODE_ENV: 'test'
+      DATABASE: 'graphql_blog_test'
+      DB_USER: 'root'
+      DB_PASSWORD: 'root'
+      DB_HOST: 'db'
+      JWT_SECRET: jwt_test
+    volumes: 
+      - ./:/www
+    depends_on: 
+      - 'db'
+    ports: 
+      - '3000:3000'
